@@ -16,6 +16,15 @@ or
 yarn
 ```
 
+修改 \node_modules\@umijs\route-utils\es\transformRoute\transformRoute.js 261 行
+
+```
+var localeName = locale !== false && menuLocale !== false && formatMessage && !!locale ? formatMessage({
+  id: locale,
+  defaultMessage: name
+}) : name;
+```
+
 ## Provided Scripts
 
 Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
