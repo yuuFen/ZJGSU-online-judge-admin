@@ -78,6 +78,18 @@ export default defineConfig({
               component: './ListTableList',
             },
             {
+              name: 'list.organ-list',
+              icon: 'ApartmentOutlined',
+              path: '/organ',
+              component: './ListOrganList',
+            },
+            {
+              name: 'list.course-list',
+              icon: 'BookOutlined',
+              path: '/course',
+              component: './ListcourseList',
+            },
+            {
               component: './404',
             },
           ],
