@@ -3,8 +3,8 @@ import { Button, Divider, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import CreateForm from './components/CreateForm';
-import UpdateForm from './components/UpdateForm';
+import CreateForm from '@/components/CreateForm';
+import UpdateForm from '@/components/UpdateForm';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 /**
  * 添加节点
