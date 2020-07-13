@@ -8,7 +8,7 @@ import UpdateForm from '@/components/UpdateForm';
 
 import requestResource from '@/services/resource';
 
-import { columnsConfig } from './config';
+import { ListConfig } from './config';
 import ListFooter from '@/components/ListFooter';
 
 const TableList = ({ match }) => {
@@ -16,8 +16,9 @@ const TableList = ({ match }) => {
 
   const { resourceName } = match.params;
   const { query, add, update, remove } = requestResource(resourceName);
+  const config = ListConfig[resourceName];
   const columns = [
-    ...columnsConfig[resourceName],
+    ...config.columns,
     {
       title: '操作',
       dataIndex: 'option',
@@ -50,6 +51,7 @@ const TableList = ({ match }) => {
   ];
 
   useEffect(() => {
+    // 存在 bug，需要先停止请求
     actionRef.current?.reloadAndRest();
   }, [resourceName]);
 
@@ -123,7 +125,7 @@ const TableList = ({ match }) => {
   return (
     <PageContainer>
       <ProTable
-        headerTitle="查询表格"
+        headerTitle={'查询' + config.title}
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={() => [
@@ -145,7 +147,11 @@ const TableList = ({ match }) => {
           handleRemove={handleRemove}
         />
       )}
-      <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
+      <CreateForm
+        title={'新建' + config.title}
+        onCancel={() => handleModalVisible(false)}
+        modalVisible={createModalVisible}
+      >
         <ProTable
           onSubmit={async (value) => {
             const success = await handleAdd(value);
