@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Input } from 'antd';
+import { Button, Divider, message, Input, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -11,7 +11,7 @@ import { queryCourse, updateCourse, addCourse, removeCourse } from './service';
  * @param fields
  */
 
-const handleAdd = async fields => {
+const handleAdd = async (fields) => {
   const hide = message.loading('正在添加');
 
   try {
@@ -30,7 +30,7 @@ const handleAdd = async fields => {
  * @param fields
  */
 
-const handleUpdate = async fields => {
+const handleUpdate = async (fields) => {
   const hide = message.loading('正在配置');
 
   try {
@@ -53,13 +53,13 @@ const handleUpdate = async fields => {
  * @param selectedRows
  */
 
-const handleRemove = async selectedRows => {
+const handleRemove = async (selectedRows) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
 
   try {
     await removeCourse({
-      key: selectedRows.map(row => row.key),
+      key: selectedRows.map((row) => row.key),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -79,7 +79,7 @@ const CourseList = () => {
   const [selectedRowsState, setSelectedRows] = useState([]);
   const columns = [
     {
-      title: '规则名称',
+      title: '课程名称',
       dataIndex: 'name',
       rules: [
         {
@@ -89,21 +89,8 @@ const CourseList = () => {
       ],
     },
     {
-      title: '描述',
+      title: '课程负责人',
       dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: val => `${val} 万`,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
       valueEnum: {
         0: {
           text: '关闭',
@@ -122,26 +109,20 @@ const CourseList = () => {
           status: 'Error',
         },
       },
+      rules: [
+        {
+          required: true,
+          message: '负责人为必填项',
+        },
+      ],
     },
     {
-      title: '上次调度时间',
-      dataIndex: 'updatedAt',
+      title: '创建时间',
+      dataIndex: 'createAt',
       sorter: true,
       valueType: 'dateTime',
       hideInForm: true,
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-
-        if (`${status}` === '0') {
-          return false;
-        }
-
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
-        }
-
-        return defaultRender(item);
-      },
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -158,15 +139,31 @@ const CourseList = () => {
             配置
           </a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <Popconfirm
+            title="你确认要删除吗？"
+            onConfirm={async () => {
+              await handleRemove([record]);
+              actionRef.current?.reloadAndRest();
+            }}
+            okText="确认"
+            cancelText="取消"
+          >
+            <a>删除</a>
+          </Popconfirm>
         </>
       ),
     },
   ];
+  const createFormConfig = {
+    onCancel: () => handleModalVisible(false),
+    modalVisible: createModalVisible,
+    title: '新建课程',
+  };
+
   return (
     <PageContainer>
       <ProTable
-        headerTitle="查询表格"
+        headerTitle="查询课程"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={() => [
@@ -181,39 +178,16 @@ const CourseList = () => {
         }}
       />
       {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{' '}
-              <a
-                style={{
-                  fontWeight: 600,
-                }}
-              >
-                {selectedRowsState.length}
-              </a>{' '}
-              项&nbsp;&nbsp;
-              <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo, 0)} 万
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest();
-            }}
-          >
-            批量删除
-          </Button>
-          <Button type="primary">批量审批</Button>
-        </FooterToolbar>
+        <ListFooter
+          selectedRowsState={selectedRowsState}
+          setSelectedRows={setSelectedRows}
+          actionRef={actionRef}
+          handleRemove={handleRemove}
+        />
       )}
-      <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
+      <CreateForm {...createFormConfig}>
         <ProTable
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleAdd(value);
 
             if (success) {
@@ -232,7 +206,7 @@ const CourseList = () => {
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleUpdate(value);
 
             if (success) {
