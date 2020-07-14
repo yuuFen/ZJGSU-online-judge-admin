@@ -29,24 +29,19 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = (menuList) => {
+const menuDataRender = (menuList) =>
   menuList.map((item) => {
     const localItem = {
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
     };
 
-    return Authorized.check(item.authority, localItem, null);
+    // 过滤动态路由，保证路由关系符合逻辑
+    // 并保证面包屑不因为路由覆盖而失效
+    if (item.path.indexOf(':') === -1) {
+      return Authorized.check(item.authority, localItem, null);
+    }
   });
-
-  // 过滤动态路由，保证路由关系符合逻辑
-  // 并保证面包屑不因为路由覆盖而失效
-  const menuData = [];
-  menuList.forEach((item) => {
-    item.path.indexOf(':') === -1 && menuData.push(item);
-  });
-  return menuData;
-};
 
 const defaultFooterDom = (
   <DefaultFooter
