@@ -3,13 +3,14 @@ import { Button, Divider, message, Popconfirm } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import CreateForm from '@/components/CreateForm';
-import UpdateForm from '@/components/UpdateForm';
+
+import CreateForm from './components/CreateForm';
+import UpdateForm from './components/UpdateForm';
+import ListFooter from './components/ListFooter';
 
 import requestResource from '@/services/resource';
 
 import { ListConfig } from './config';
-import ListFooter from '@/components/ListFooter';
 
 const TableList = ({ match }) => {
   const actionRef = useRef();
