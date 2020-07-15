@@ -1,4 +1,4 @@
-import { Divider, Popconfirm } from 'antd';
+import { Popover } from 'antd';
 
 const ruleColumns = [
   {
@@ -71,13 +71,26 @@ const ruleColumns = [
 const courseColumns = [
   {
     title: '课程名称',
-    dataIndex: 'name',
+    dataIndex: 'nick',
     rules: [
       {
         required: true,
         message: '规则名称为必填项',
       },
     ],
+    render: (_, record) => {
+      const content = (
+        <div>
+          <p>{record.introduction}</p>
+          <p>目标：{record.aim}</p>
+        </div>
+      );
+      return (
+        <Popover content={content} title="课程详情">
+          <a>{record.nick}</a>
+        </Popover>
+      );
+    },
   },
   {
     title: '课程负责人',
@@ -108,6 +121,18 @@ const courseColumns = [
       },
     ],
   },
+
+  {
+    title: '课程简介',
+    dataIndex: 'introduction',
+    hideInTable: true,
+  },
+  {
+    title: '课程目标',
+    dataIndex: 'aim',
+    hideInTable: true,
+  },
+
   {
     title: '创建时间',
     dataIndex: 'createAt',
@@ -120,18 +145,26 @@ const courseColumns = [
 const organColumns = [
   {
     title: '组织名称',
-    dataIndex: 'name',
+    dataIndex: 'nick',
     rules: [
       {
         required: true,
         message: '组织名称为必填项',
       },
     ],
+    render: (_, record) => (
+      <a
+        onClick={() => {
+          console.log(record.id);
+        }}
+      >
+        {record.nick}
+      </a>
+    ),
   },
   {
     title: '上级组织',
-    dataIndex: 'father',
-    sorter: true,
+    dataIndex: 'parent',
     valueEnum: {
       0: {
         text: '关闭',
@@ -150,6 +183,24 @@ const organColumns = [
         status: 'Error',
       },
     },
+    render: (_, record) =>
+      record.parent &&
+      record.parent.map((item, index) => {
+        return (
+          <>
+            <span>
+              {index !== 0 && ' < '}
+              <a
+                onClick={() => {
+                  console.log(item.id);
+                }}
+              >
+                {item.nick}
+              </a>
+            </span>
+          </>
+        );
+      }),
   },
   {
     title: '创建时间',
