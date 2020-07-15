@@ -58,11 +58,7 @@ const TableList = ({ match }) => {
   ];
 
   columns[0].render = (_, record) => {
-    return (
-      <div>
-        <a onClick={() => handledetailModalVisible(true)}>{record.nick}</a>
-      </div>
-    );
+    return <a onClick={() => handledetailModalVisible(true)}>{record.nick || record.name}</a>;
   };
 
   useEffect(() => {
@@ -207,7 +203,7 @@ const TableList = ({ match }) => {
         title={config.title + '详情'}
         onCancel={() => handledetailModalVisible(false)}
         modalVisible={detailModalVisible}
-      ></DetailForm>
+      />
     </PageContainer>
   );
 };
