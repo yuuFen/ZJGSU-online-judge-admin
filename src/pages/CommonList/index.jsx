@@ -4,16 +4,22 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 
+import DetailForm from './components/DetailForm';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import ListFooter from './components/ListFooter';
 
 import requestResource from '@/services/resource';
 
-import { ListConfig } from './config';
+import { ListConfig } from './config/config';
 
 const TableList = ({ match }) => {
   const actionRef = useRef();
+  const [detailModalVisible, handledetailModalVisible] = useState(false);
+  const [createModalVisible, handleCreateModalVisible] = useState(false);
+  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
+  const [stepFormValues, setStepFormValues] = useState({});
+  const [selectedRowsState, setSelectedRows] = useState([]);
 
   const { resourceName } = match.params;
   const { query, add, update, remove } = requestResource(resourceName);
@@ -51,15 +57,18 @@ const TableList = ({ match }) => {
     },
   ];
 
+  columns[0].render = (_, record) => {
+    return (
+      <div>
+        <a onClick={() => handledetailModalVisible(true)}>{record.nick}</a>
+      </div>
+    );
+  };
+
   useEffect(() => {
     // 存在 bug，需要先停止请求
     actionRef.current?.reloadAndRest();
   }, [resourceName]);
-
-  const [createModalVisible, handleModalVisible] = useState(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
-  const [stepFormValues, setStepFormValues] = useState({});
-  const [selectedRowsState, setSelectedRows] = useState([]);
 
   /**
    * 添加节点
@@ -130,7 +139,7 @@ const TableList = ({ match }) => {
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={() => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button type="primary" onClick={() => handleCreateModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,
         ]}
@@ -150,7 +159,7 @@ const TableList = ({ match }) => {
       )}
       <CreateForm
         title={'新建' + config.title}
-        onCancel={() => handleModalVisible(false)}
+        onCancel={() => handleCreateModalVisible(false)}
         modalVisible={createModalVisible}
       >
         <ProTable
@@ -158,7 +167,7 @@ const TableList = ({ match }) => {
             const success = await handleAdd(value);
 
             if (success) {
-              handleModalVisible(false);
+              handleCreateModalVisible(false);
 
               if (actionRef.current) {
                 actionRef.current.reload();
@@ -193,6 +202,12 @@ const TableList = ({ match }) => {
           values={stepFormValues}
         />
       ) : null}
+
+      <DetailForm
+        title={config.title + '详情'}
+        onCancel={() => handledetailModalVisible(false)}
+        modalVisible={detailModalVisible}
+      ></DetailForm>
     </PageContainer>
   );
 };
