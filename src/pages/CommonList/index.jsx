@@ -6,7 +6,7 @@ import ProTable from '@ant-design/pro-table';
 
 import DetailForm from './components/DetailForm';
 import CreateForm from './components/CreateForm';
-import UpdateForm from './components/UpdateForm';
+import CoureseUpdateForm from './components/CoureseUpdateForm';
 import ListFooter from './components/ListFooter';
 
 import requestResource from '@/services/resource';
@@ -60,6 +60,20 @@ const TableList = ({ match }) => {
   columns[0].render = (_, record) => {
     return <a onClick={() => handledetailModalVisible(true)}>{record.nick || record.name}</a>;
   };
+  if (resourceName === 'organ') {
+    columns[1].render = (_, record) =>
+      record.parent &&
+      record.parent.map((item, index) => {
+        return (
+          <>
+            <span>
+              {index !== 0 && ' < '}
+              <a onClick={() => handledetailModalVisible(true)}>{item.nick}</a>
+            </span>
+          </>
+        );
+      });
+  }
 
   useEffect(() => {
     // 存在 bug，需要先停止请求
@@ -177,7 +191,7 @@ const TableList = ({ match }) => {
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
+        <CoureseUpdateForm
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
 
@@ -203,7 +217,7 @@ const TableList = ({ match }) => {
         title={config.title + '详情'}
         onCancel={() => handledetailModalVisible(false)}
         modalVisible={detailModalVisible}
-      />
+      ></DetailForm>
     </PageContainer>
   );
 };

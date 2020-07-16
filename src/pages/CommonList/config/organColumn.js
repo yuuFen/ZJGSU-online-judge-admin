@@ -30,24 +30,6 @@ const organColumns = [
         status: 'Error',
       },
     },
-    render: (_, record) =>
-      record.parent &&
-      record.parent.map((item, index) => {
-        return (
-          <>
-            <span>
-              {index !== 0 && ' < '}
-              <a
-                onClick={() => {
-                  console.log(item.id);
-                }}
-              >
-                {item.nick}
-              </a>
-            </span>
-          </>
-        );
-      }),
   },
   {
     title: '创建时间',
