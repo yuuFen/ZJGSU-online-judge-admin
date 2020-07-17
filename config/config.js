@@ -74,12 +74,7 @@ export default defineConfig({
             {
               path: '/list/:resourceName',
               component: './CommonList',
-              hideInMenu: true
-            },
-            {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list/rule',
+              hideInMenu: true,
             },
             {
               name: 'list.organ-list',
@@ -90,6 +85,16 @@ export default defineConfig({
               name: 'list.course-list',
               icon: 'BookOutlined',
               path: '/list/course',
+            },
+            {
+              name: 'list.class-list',
+              icon: 'TeamOutlined',
+              path: '/list/class',
+            },
+            {
+              name: 'list.table-list',
+              icon: 'table',
+              path: '/list/rule',
             },
             {
               component: './404',

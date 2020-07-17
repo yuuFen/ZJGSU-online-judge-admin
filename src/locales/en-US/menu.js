@@ -25,6 +25,7 @@ export default {
   'menu.list.table-list': 'Search Table',
   'menu.list.organ-list': 'Organ',
   'menu.list.course-list': 'Course',
+  'menu.list.class-list': 'Class',
   'menu.list.basic-list': 'Basic List',
   'menu.list.card-list': 'Card List',
   'menu.list.search-list': 'Search List',
