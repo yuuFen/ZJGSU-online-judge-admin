@@ -4,10 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 
-import DetailForm from './components/DetailForm';
-import CreateForm from './components/CreateForm';
-import CoureseUpdateForm from './components/CoureseUpdateForm';
-import ListFooter from './components/ListFooter';
+import DetailForm from '@/components/List/DetailForm';
+import CreateForm from '@/components/List/CreateForm';
+import ListFooter from '@/components/List/ListFooter';
 
 import requestResource from '@/services/resource';
 
@@ -17,13 +16,16 @@ const TableList = ({ match }) => {
   const actionRef = useRef();
   const [detailModalVisible, handledetailModalVisible] = useState(false);
   const [createModalVisible, handleCreateModalVisible] = useState(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const [selectedRowsState, setSelectedRows] = useState([]);
+  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
 
   const { resourceName } = match.params;
+
   const { query, add, update, remove } = requestResource(resourceName);
   const config = ListConfig[resourceName];
+  const { UpdateForm } = config;
+
   const columns = [
     ...config.columns,
     {
@@ -191,7 +193,7 @@ const TableList = ({ match }) => {
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
-        <CoureseUpdateForm
+        <UpdateForm
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
 

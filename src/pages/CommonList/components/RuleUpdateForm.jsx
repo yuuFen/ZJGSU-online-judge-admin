@@ -21,7 +21,7 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const UpdateForm = (props) => {
+const RuleUpdateForm = (props) => {
   const [formVals, setFormVals] = useState({
     nick: props.values.nick,
     introduction: props.values.introduction,
@@ -53,78 +53,6 @@ const UpdateForm = (props) => {
   };
 
   const renderContent = () => {
-    if (currentStep === 1) {
-      return (
-        <>
-          {units.map((_, index) => (
-            <>
-              <FormItem
-                name={'unit' + index}
-                label="课程章节"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入课程章节！',
-                  },
-                ]}
-              >
-                <Input placeholder="请输入" />
-              </FormItem>
-              <FormList name={'knows' + index}>
-                {(fields, { add, remove }) => {
-                  return (
-                    <>
-                      {fields.map((field, index) => (
-                        <FormItem
-                          {...(index !== 0 && formItemLayoutWithOutLabel)}
-                          label={index === 0 ? '知识点' : ''}
-                          required={true}
-                          key={field.key}
-                        >
-                          <FormItem
-                            {...field}
-                            validateTrigger={['onChange', 'onBlur']}
-                            rules={[
-                              {
-                                required: true,
-                                whitespace: true,
-                                message: '请输入相应知识点',
-                              },
-                            ]}
-                            noStyle
-                          >
-                            <Input placeholder={'知识点 ' + (index + 1)} style={{ width: '90%' }} />
-                          </FormItem>
-                          {fields.length > 1 ? (
-                            <MinusCircleOutlined
-                              className="dynamic-delete-button"
-                              style={{ margin: '0 8px' }}
-                              onClick={() => {
-                                remove(field.name);
-                              }}
-                            />
-                          ) : null}
-                        </FormItem>
-                      ))}
-                      <FormItem {...formItemLayoutWithOutLabel}>
-                        <Button
-                          type="dashed"
-                          onClick={() => {
-                            add();
-                          }}
-                        >
-                          <PlusOutlined /> 添加知识点
-                        </Button>
-                      </FormItem>
-                    </>
-                  );
-                }}
-              </FormList>
-            </>
-          ))}
-        </>
-      );
-    }
     return (
       <>
         <FormItem
@@ -261,4 +189,4 @@ const UpdateForm = (props) => {
   );
 };
 
-export default UpdateForm;
+export default RuleUpdateForm;
