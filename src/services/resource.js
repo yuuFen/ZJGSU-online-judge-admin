@@ -34,31 +34,3 @@ const requestResource = (resource) => {
 };
 
 export default requestResource;
-
-// export const query = (resource) => async (params) => {
-//   // return Promise
-//   return request(`/api/${resource}`, {
-//     params,
-//   });
-// };
-
-// export const remove = (resource) => async (params) => {
-//   return request(`/api/${resource}`, {
-//     method: 'POST',
-//     data: { ...params, method: 'delete' },
-//   });
-// };
-
-// export const add = (resource) => async (params) => {
-//   return request(`/api/${resource}`, {
-//     method: 'POST',
-//     data: { ...params, method: 'post' },
-//   });
-// };
-
-// export const update = (resource) => async (params) => {
-//   return request(`/api/${resource}`, {
-//     method: 'POST',
-//     data: { ...params, method: 'update' },
-//   });
-// };
