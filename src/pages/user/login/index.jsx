@@ -18,13 +18,13 @@ const LoginMessage = ({ content }) => (
   />
 );
 
-const Login = props => {
+const Login = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { code, type: loginType } = userLogin;
   const [autoLogin, setAutoLogin] = useState(true);
   const [type, setType] = useState('account');
 
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     const { dispatch } = props;
     dispatch({
       type: 'login/login',
@@ -36,13 +36,13 @@ const Login = props => {
     <div className={styles.main}>
       <LoginForm activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
         <Tab key="account" tab="账户密码登录">
-          {status === 'error' && loginType === 'account' && !submitting && (
-            <LoginMessage content="账户或密码错误（admin/ant.design）" />
+          {code === -1 && loginType === 'account' && !submitting && (
+            <LoginMessage content="账户或密码错误" />
           )}
 
           <UserName
-            name="userName"
-            placeholder="用户名: admin or user"
+            name="username"
+            placeholder="用户名: test_orgn2_nick"
             rules={[
               {
                 required: true,
@@ -52,7 +52,7 @@ const Login = props => {
           />
           <Password
             name="password"
-            placeholder="密码: ant.design"
+            placeholder="密码: 123456"
             rules={[
               {
                 required: true,
@@ -62,7 +62,7 @@ const Login = props => {
           />
         </Tab>
         <Tab key="mobile" tab="学校学号登录">
-          {status === 'error' && loginType === 'mobile' && !submitting && (
+          {code === -1 && loginType === 'mobile' && !submitting && (
             <LoginMessage content="验证码错误" />
           )}
           <Mobile
@@ -94,7 +94,7 @@ const Login = props => {
           />
         </Tab>
         <div>
-          <Checkbox checked={autoLogin} onChange={e => setAutoLogin(e.target.checked)}>
+          <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
             自动登录
           </Checkbox>
           <a

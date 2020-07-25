@@ -7,8 +7,15 @@
  */
 export default {
   dev: {
+    '/login': {
+      target: 'http://10.21.234.24:8080/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
     '/api/': {
-      target: '',
+      target: 'http://10.21.234.24:8080/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
