@@ -1,4 +1,4 @@
-function getOrgan(req, res, u) {
+function getOrgn(req, res, u) {
   const result = {
     code: 0,
     msg: 'success',
@@ -37,5 +37,5 @@ function getOrgan(req, res, u) {
 }
 
 export default {
-  'GET /api/organ': getOrgan,
+  'GET /api/orgn': getOrgn,
 };

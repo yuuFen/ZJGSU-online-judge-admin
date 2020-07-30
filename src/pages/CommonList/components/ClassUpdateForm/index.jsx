@@ -53,7 +53,7 @@ const ClassUpdateForm = (props) => {
     pageSize: 10,
   });
   const [filter, setFilter] = useState({
-    organ: undefined,
+    orgn: undefined,
     search: '',
   });
 

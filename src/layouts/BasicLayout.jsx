@@ -38,7 +38,7 @@ const menuDataRender = (menuList) =>
 
     // 过滤动态路由，保证路由关系符合逻辑
     // 并保证面包屑不因为路由覆盖而失效
-    if (item.path.indexOf(':') === -1) {
+    if (!item.hideInMenu) {
       return Authorized.check(item.authority, localItem, null);
     }
   });

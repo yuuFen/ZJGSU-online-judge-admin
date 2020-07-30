@@ -1,4 +1,4 @@
-const organColumns = [
+const orgnColumns = [
   {
     title: '组织名称',
     dataIndex: 'nick',
@@ -41,4 +41,4 @@ const organColumns = [
   },
 ];
 
-export default organColumns;
+export default orgnColumns;

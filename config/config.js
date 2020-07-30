@@ -77,9 +77,9 @@ export default defineConfig({
               hideInMenu: true,
             },
             {
-              name: 'list.organ-list',
+              name: 'list.orgn-list',
               icon: 'ApartmentOutlined',
-              path: '/list/organ',
+              path: '/list/orgn',
             },
             {
               name: 'list.course-list',
@@ -91,6 +91,37 @@ export default defineConfig({
               icon: 'TeamOutlined',
               path: '/list/class',
             },
+
+            {
+              name: 'list.question-list',
+              icon: 'EditOutlined',
+              routes: [
+                {
+                  name: 'list',
+                  path: '/question/list',
+                  component: './question/List',
+                },
+                {
+                  // 创建
+                  name: 'edit',
+                  path: '/question/edit',
+                  component: './question/Edit',
+                },
+                {
+                  // 编辑
+                  name: 'edit',
+                  path: '/question/edit/:questionId',
+                  component: './question/Edit',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'check',
+                  path: '/question/check',
+                  // component: './question/Check',
+                },
+              ],
+            },
+
             {
               name: 'list.table-list',
               icon: 'table',

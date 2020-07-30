@@ -15,7 +15,7 @@ const formLayout = {
   },
 };
 
-const OrganUpdateForm = (props) => {
+const OrgnUpdateForm = (props) => {
   const [formVals, setFormVals] = useState({
     name: props.values.name,
     desc: props.values.desc,
@@ -242,4 +242,4 @@ const OrganUpdateForm = (props) => {
   );
 };
 
-export default OrganUpdateForm;
+export default OrgnUpdateForm;

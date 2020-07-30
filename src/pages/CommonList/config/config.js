@@ -1,12 +1,12 @@
 import ruleColumns from './ruleColumn';
 import courseColumns from './courseColumn';
-import organColumns from './organColumn';
+import orgnColumns from './orgnColumn';
 import classColumns from './classColumn';
 
 // todo: 按需加载
 import CourseUpdateForm from '../components/CourseUpdateForm';
 import RuleUpdateForm from '../components/RuleUpdateForm';
-import OrganUpdateForm from '../components/OrganUpdateForm';
+import OrgnUpdateForm from '../components/OrgnUpdateForm';
 import ClassUpdateForm from '../components/ClassUpdateForm/index';
 
 export const ListConfig = {
@@ -17,11 +17,11 @@ export const ListConfig = {
       return <RuleUpdateForm {...props} />;
     },
   },
-  organ: {
-    columns: organColumns,
+  orgn: {
+    columns: orgnColumns,
     title: '组织',
     UpdateForm(props) {
-      return <OrganUpdateForm {...props} />;
+      return <OrgnUpdateForm {...props} />;
     },
   },
   course: {

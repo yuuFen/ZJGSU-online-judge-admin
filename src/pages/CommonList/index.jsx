@@ -62,7 +62,7 @@ const TableList = ({ match }) => {
   columns[0].render = (_, record) => {
     return <a onClick={() => handledetailModalVisible(true)}>{record.nick || record.name}</a>;
   };
-  if (resourceName === 'organ') {
+  if (resourceName === 'orgn') {
     columns[1].render = (_, record) =>
       record.parent &&
       record.parent.map((item, index) => {
