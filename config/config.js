@@ -117,7 +117,7 @@ export default defineConfig({
                 {
                   name: 'check',
                   path: '/question/check',
-                  // component: './question/Check',
+                  component: './question/Check',
                 },
               ],
             },
