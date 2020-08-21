@@ -5,6 +5,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 
 import { queryDetail, add } from './service.js';
 
+const finalData = {};
+
 /**
  * 更新节点
  * @param fields
@@ -131,15 +133,17 @@ export default function UpdateForm({ match }) {
             <TextArea rows={3} placeholder="请输入提示说明" />
           </FormItem>
 
-          {{
-            '0': danXuanItems,
-            '1': duoXuanItems,
-            '2': panDuanItems,
-            '3': tianKongItems,
-            '4': chengXuTianKongItems,
-            '5': gaiCuoItems,
-            '6': bianChengItems,
-          }[type]()}
+          {
+            {
+              '0': <DanXuanItems />,
+              '1': <DuoXuanItems />,
+              '2': <PanDuanItems />,
+              '3': <TianKongItems />,
+              '4': <ChengXuTianKongItems />,
+              '5': <GaiCuoItems />,
+              '6': <BianChengItems />,
+            }[type]
+          }
 
           <FormItem wrapperCol={{ offset: 6, span: 16 }}>
             <Button type="primary" htmlType="submit">
@@ -153,7 +157,9 @@ export default function UpdateForm({ match }) {
 }
 
 // 单选题
-const danXuanItems = (props) => {
+const DanXuanItems = (props) => {
+  const [answers, setAnswers] = useState(['', '', '']);
+
   const radioStyle = {
     display: 'block',
     height: '30px',
@@ -164,28 +170,36 @@ const danXuanItems = (props) => {
     <>
       <FormItem name="answer" label="题目答案">
         <Radio.Group style={{ width: 'calc(100% - 25px)' }} onChange={() => {}}>
-          <Radio style={radioStyle} value={1}>
-            <Input
-              placeholder="请输入选项"
-              addonAfter={
-                <Button onClick={() => {}}>
-                  <PlusOutlined /> 添加选项
-                </Button>
-              }
-            />
-          </Radio>
-          <Radio style={radioStyle} value={2}>
-            <Input
-              placeholder="请输入选项"
-              addonAfter={<Button danger icon={<MinusOutlined />} onClick={() => {}} />}
-            />
-          </Radio>
-          <Radio style={radioStyle} value={3}>
-            <Input
-              placeholder="请输入选项"
-              addonAfter={<Button danger icon={<MinusOutlined />} onClick={() => {}} />}
-            />
-          </Radio>
+          {answers.map((item, index) => (
+            <Radio style={radioStyle} value={index} key={index}>
+              <Input
+                value={item}
+                onChange={(e) => {
+                  const tmp = answers.slice();
+                  tmp[index] = e.target.value;
+                  setAnswers(tmp);
+                }}
+                placeholder="请输入选项"
+                addonAfter={
+                  index === 0 ? (
+                    <Button onClick={() => setAnswers([...answers, ''])}>
+                      <PlusOutlined /> 添加选项
+                    </Button>
+                  ) : (
+                    <Button
+                      danger
+                      icon={<MinusOutlined />}
+                      onClick={() => {
+                        const tmp = answers.slice();
+                        tmp.splice(index, 1);
+                        setAnswers(tmp);
+                      }}
+                    />
+                  )
+                }
+              />
+            </Radio>
+          ))}
         </Radio.Group>
       </FormItem>
     </>
@@ -193,7 +207,9 @@ const danXuanItems = (props) => {
 };
 
 // 多选
-const duoXuanItems = (props) => {
+const DuoXuanItems = (props) => {
+  const [answers, setAnswers] = useState(['', '', '']);
+
   const checkboxStyle = {
     display: 'block',
     height: '30px',
@@ -203,38 +219,44 @@ const duoXuanItems = (props) => {
   return (
     <>
       <FormItem name="answer" label="题目答案">
-        <Checkbox style={checkboxStyle} onChange={() => {}}>
-          <Input
-            style={{ width: 'calc(100% - 33px)' }}
-            placeholder="请输入选项"
-            addonAfter={
-              <Button onClick={() => {}}>
-                <PlusOutlined /> 添加选项
-              </Button>
-            }
-          />
-        </Checkbox>
-        <Checkbox style={checkboxStyle} onChange={() => {}}>
-          <Input
-            style={{ width: 'calc(100% - 33px)' }}
-            placeholder="请输入选项"
-            addonAfter={<Button danger icon={<MinusOutlined />} onClick={() => {}} />}
-          />
-        </Checkbox>
-        <Checkbox style={checkboxStyle} onChange={() => {}}>
-          <Input
-            style={{ width: 'calc(100% - 33px)' }}
-            placeholder="请输入选项"
-            addonAfter={<Button danger icon={<MinusOutlined />} onClick={() => {}} />}
-          />
-        </Checkbox>
+        {answers.map((item, index) => (
+          <Checkbox style={checkboxStyle} onChange={() => {}} key={index}>
+            <Input
+              style={{ width: 'calc(100% - 33px)' }}
+              value={item}
+              onChange={(e) => {
+                const tmp = answers.slice();
+                tmp[index] = e.target.value;
+                setAnswers(tmp);
+              }}
+              placeholder="请输入选项"
+              addonAfter={
+                index === 0 ? (
+                  <Button onClick={() => setAnswers([...answers, ''])}>
+                    <PlusOutlined /> 添加选项
+                  </Button>
+                ) : (
+                  <Button
+                    danger
+                    icon={<MinusOutlined />}
+                    onClick={() => {
+                      const tmp = answers.slice();
+                      tmp.splice(index, 1);
+                      setAnswers(tmp);
+                    }}
+                  />
+                )
+              }
+            />
+          </Checkbox>
+        ))}
       </FormItem>
     </>
   );
 };
 
 // 判断
-const panDuanItems = (props) => {
+const PanDuanItems = (props) => {
   const radioStyle = {
     display: 'block',
     height: '30px',
@@ -256,108 +278,84 @@ const panDuanItems = (props) => {
   );
 };
 
-const tianKongItems = (props) => {
+// 填空
+const TianKongItems = (props) => {
+  const [answers, setAnswers] = useState(['0', '1', '2']);
+
   return (
     <>
-      {' '}
-      <FormItem
-        name="frequency"
-        label="填空"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入任课教师！',
-        //   },
-        // ]}
-      >
-        <Select mode="multiple" style={{ width: '100%' }} placeholder="请选择">
-          <Option value="month">月</Option>
-          <Option value="week">周</Option>
-        </Select>
-      </FormItem>
-      <FormItem
-        name="introduction"
-        label="课程简介"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程简介！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
-      </FormItem>
-      <FormItem
-        name="desc"
-        label="课程要求"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程要求！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
-      </FormItem>
+      {answers.map((item, index) => (
+        <FormItem name={'answers' + item} label={'第' + (index + 1) + '空答案'}>
+          <Input
+            placeholder="请输入答案"
+            addonAfter={
+              index === 0 ? (
+                // 防重
+                <Button onClick={() => setAnswers([...answers, answers.length + Math.random()])}>
+                  <PlusOutlined /> 添加选项
+                </Button>
+              ) : (
+                <Button
+                  danger
+                  icon={<MinusOutlined />}
+                  onClick={() => {
+                    const tmp = answers.slice();
+                    tmp.splice(index, 1);
+                    setAnswers(tmp);
+                  }}
+                />
+              )
+            }
+          />
+        </FormItem>
+      ))}
     </>
   );
 };
 
-const chengXuTianKongItems = (props) => {
+// 程序填空
+const ChengXuTianKongItems = (props) => {
+  const [answers, setAnswers] = useState(['0', '1', '2']);
+
   return (
     <>
-      {' '}
-      <FormItem
-        name="frequency"
-        label="chengXuTianKongItems"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入任课教师！',
-        //   },
-        // ]}
-      >
-        <Select mode="multiple" style={{ width: '100%' }} placeholder="请选择">
-          <Option value="month">月</Option>
-          <Option value="week">周</Option>
-        </Select>
+      <FormItem name="signStr" label="脚本替换字符串">
+        <Input placeholder="请输入替换字符串" />
       </FormItem>
-      <FormItem
-        name="introduction"
-        label="课程简介"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程简介！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
-      </FormItem>
-      <FormItem
-        name="desc"
-        label="课程要求"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程要求！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
-      </FormItem>
+
+      {answers.map((item, index) => (
+        <FormItem name={'answers' + item} label={'第' + (index + 1) + '空答案'}>
+          <Input
+            placeholder="请输入答案"
+            addonAfter={
+              index === 0 ? (
+                // 防重
+                <Button onClick={() => setAnswers([...answers, answers.length + Math.random()])}>
+                  <PlusOutlined /> 添加选项
+                </Button>
+              ) : (
+                <Button
+                  danger
+                  icon={<MinusOutlined />}
+                  onClick={() => {
+                    const tmp = answers.slice();
+                    tmp.splice(index, 1);
+                    setAnswers(tmp);
+                  }}
+                />
+              )
+            }
+          />
+        </FormItem>
+      ))}
     </>
   );
 };
 
-const gaiCuoItems = (props) => {
+// 程序改错
+const GaiCuoItems = (props) => {
   return (
     <>
-      {' '}
       <FormItem
         name="frequency"
         label="gaiCuoItems"
@@ -403,50 +401,27 @@ const gaiCuoItems = (props) => {
   );
 };
 
-const bianChengItems = (props) => {
+// 编程
+const BianChengItems = (props) => {
   return (
     <>
-      {' '}
-      <FormItem
-        name="frequency"
-        label="bianChengItems"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入任课教师！',
-        //   },
-        // ]}
-      >
-        <Select mode="multiple" style={{ width: '100%' }} placeholder="请选择">
-          <Option value="month">月</Option>
-          <Option value="week">周</Option>
-        </Select>
+      <FormItem name="inputFormat" label="输入格式">
+        <TextArea rows={3} placeholder="请输入输入格式" />
       </FormItem>
-      <FormItem
-        name="introduction"
-        label="课程简介"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程简介！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
+      <FormItem name="outputFormat" label="输出格式">
+        <TextArea rows={3} placeholder="请输入输出格式" />
       </FormItem>
-      <FormItem
-        name="desc"
-        label="课程要求"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请输入至少五个字符的课程要求！',
-        //     min: 5,
-        //   },
-        // ]}
-      >
-        <TextArea rows={3} placeholder="请输入至少五个字符" />
+      <FormItem name="inputExample1" label="输入样例1">
+        <TextArea rows={2} placeholder="请输入输入样例1" />
+      </FormItem>
+      <FormItem name="outputExample1" label="输出样例1">
+        <TextArea rows={2} placeholder="请输入输出样例1" />
+      </FormItem>
+      <FormItem name="inputExample2" label="输入样例2">
+        <TextArea rows={2} placeholder="请输入输入样例2" />
+      </FormItem>
+      <FormItem name="outputExample2" label="输出样例2">
+        <TextArea rows={2} placeholder="请输入输出样例2" />
       </FormItem>
     </>
   );
