@@ -23,10 +23,15 @@ export default {
   'menu.form.advanced-form': '高级表单',
   'menu.list': '列表页',
   'menu.list.table-list': '查询表格',
+  
   'menu.list.question-list': '题目',
   'menu.list.question-list.list': '列表',
   'menu.list.question-list.edit': '创建/编辑',
   'menu.list.question-list.check': '审核',
+
+  'menu.list.test-list': '考试',
+  'menu.list.homework-list': '作业',
+
   'menu.list.orgn-list': '组织',
   'menu.list.course-list': '课程',
   'menu.list.class-list': '班级',

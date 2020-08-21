@@ -29,8 +29,8 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = (menuList) =>
-  menuList.map((item) => {
+const menuDataRender = (menuList) => {
+  const res = menuList.map((item) => {
     const localItem = {
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
@@ -42,6 +42,10 @@ const menuDataRender = (menuList) =>
       return Authorized.check(item.authority, localItem, null);
     }
   });
+  
+  console.log(res);
+  return res;
+};
 
 const defaultFooterDom = (
   <DefaultFooter

@@ -82,16 +82,53 @@ export default defineConfig({
               path: '/list/orgn',
             },
             {
+              name: 'list.class-list',
+              icon: 'TeamOutlined',
+              path: '/list/class',
+            },
+            {
               name: 'list.course-list',
               icon: 'BookOutlined',
               path: '/list/course',
             },
             {
-              name: 'list.class-list',
-              icon: 'TeamOutlined',
-              path: '/list/class',
+              // 考试
+              name: 'list.test-list',
+              icon: 'FormOutlined',
+              path: '/test',
+              component: './test/List',
             },
-
+            {
+              // 创建考试
+              path: '/test/edit',
+              component: './test/Edit',
+              hideInMenu: true,
+            },
+            {
+              // 编辑考试
+              path: '/test/edit/:testId',
+              component: './test/Edit',
+              hideInMenu: true,
+            },
+            {
+              // 作业
+              name: 'list.homework-list',
+              icon: 'CopyOutlined',
+              path: '/homework',
+              component: './homework/List',
+            },
+            {
+              // 创建作业
+              path: '/homework/edit',
+              component: './homework/Edit',
+              hideInMenu: true,
+            },
+            {
+              // 编辑作业
+              path: '/homework/edit/:homeworkId',
+              component: './homework/Edit',
+              hideInMenu: true,
+            },
             {
               name: 'list.question-list',
               icon: 'EditOutlined',
